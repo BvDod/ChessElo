@@ -1,1 +1,1 @@
-web: gunicorn chesselo:app
+web: gunicorn mysite:app
