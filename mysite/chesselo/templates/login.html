@@ -1,0 +1,112 @@
+
+{% extends "basic_layout.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block title%}ChessElo. - Log in{% endblock %}
+
+
+{% block header-right %}
+<div class="register-block">
+    <div class="noaccount" >No account yet?</div>
+    <button type="submit" class="btn btn-light" id="reg-btn2">Sign up</button>   
+</div>
+{% endblock %}
+
+
+{% block main %}
+
+
+
+<div class="login-main"></div>
+    <h1 style="text-align: center; margin-bottom: 20px;">Sign in</h1>
+    <div class="login-form-container" style="margin-left:20px; margin-right:20px;">
+        <form class="login-form" action="/index" method="POST">
+            {% csrf_token %} 
+            <div class="form-group">
+                <input type="text" class="form-control" name="login_username" placeholder="Username" required>
+            </div>
+            <div class="form-group input-group">
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
+                <span class="input-group-btn login-btn">
+                    <button type="submit" class="btn btn-info login-button">Login</button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div id="reg-modal2" class="reg-modal">
+
+    <div class="modal-content">
+        
+        <div class="modal-header" style="font-weight: 500; font-size: 150%;">
+            Sign up
+            <span class="close">&times;</span>
+        </div>
+        
+        <div class="modal-body">
+            <form method="POST" action="/index" class="reg-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form|crispy }}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info">Register</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<script>
+    // If there was an error in the registerform, instantly open the register modal.
+    {% if show_register == True %}
+        // Source that helped: https://stackoverflow.com/questions/799981/document-ready-equivalent-without-jquery
+        document.addEventListener("DOMContentLoaded", function(event) { 
+            modal.style.display = "block"
+        });
+    {% endif %}
+    
+    // Basic variables definitions for the modal.
+    var modal = document.getElementById("reg-modal2");
+    var btn = document.getElementById("reg-btn2");
+    var span = document.getElementsByClassName("close")[1];
+    
+
+    // When the user clicks the button, open the modal. 
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal.
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it.
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+</script>
+</div>
+{% endblock %}
+
+
+{% block footer %}
+<div class="footer">
+    <i>Created by b.dodewaard@gmail.com.</i>
+</div>
+{% endblock %}

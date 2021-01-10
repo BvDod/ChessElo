@@ -1,0 +1,110 @@
+
+{% extends "basic_layout.html" %}
+
+
+{% block title%}ChessElo. - Leaderboards{% endblock %}
+
+
+{% block header-right %}
+<div class='logout-block' style="float:right">
+    <form action="/logout" method="POST">
+        {% csrf_token %}
+        <div class="logout"><span class="logout">{{ user.get_username }}{% if user_elo %} ({{ user_elo }}){% endif %}</span></div>
+        <button type="submit" class="btn btn-light">Log out</button>  
+    </form>
+</div>
+{% endblock %}
+
+
+{% block main %}
+
+
+
+<div class="leaderboards-main">
+    <div>
+        <h2 style="text-align: center;">Incoming</h2>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                        
+                        <th>White</th>
+                        <th></th>
+                        <th>Black</th>
+                        <th>Date</th>
+                        <th></th>
+                </tr>
+            </thead>
+        {% if pending_list|length %}
+            <tbody>
+                {% for match in pending_list %}
+                    <tr>
+                        <td {% if match.user_white == request.user.username %} class="bold" {% endif %} >{{match.user_white}}{% if match.white_win == "win" %}<span class="win"> (Win)</span>{%endif%}{% if match.white_win == "loss" %}<span class="loss"> (Loss)</span>{% endif %}{% if match.white_win == "tie" %} (Tie){% endif %}</td>
+                        <td>vs</td>
+                        <td {% if match.user_black == request.user.username %} class="bold" {% endif %}>{{match.user_black}}{% if match.white_win == "win" %}<span class="loss"> (Loss)</span>{%endif%}{% if match.white_win == "loss" %}<span class="win"> (Win)</span>{% endif %} {% if match.white_win == "tie" %}(Tie){% endif %}</td>
+                        <td>{{match.match_datetime|date:'Y-m-d H:i' }}</td>
+                        <td>
+                            <form action="/accept" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" id="match" name="match" value={{ match.id }}>
+                                <button type="submit" class="btn btn-success" >Accept</button>  
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        </table>
+        <div style="text-align:center; margin-bottom: 30px;"> None. </div>
+        {% endif %}
+    </div>
+    <div>
+        <h2 style="text-align: center;">Outgoing</h2>
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                        
+                        <th>White</th>
+                        <th></th>
+                        <th>Black</th>
+                        <th>Date</th>
+                        <th></th>
+                </tr>
+            </thead>
+        {% if outgoing_list|length %}
+            <tbody>
+                {% for match in outgoing_list %}
+                    <tr>
+                        <td {% if match.user_white == request.user.username %} class="bold" {% endif %}>{{match.user_white}}{% if match.white_win == "win" %}<span class="win"> (Win)</span>{%endif%}{% if match.white_win == "loss" %}<span class="loss"> (Loss)</span>{% endif %}{% if match.white_win == "tie" %} (Tie){% endif %}</td>
+                        <td>vs</td>
+                        <td {% if match.user_black == request.user.username %} class="bold" {% endif %}>{{match.user_black}}{% if match.white_win == "win" %}<span class="loss"> (Loss)</span>{%endif%}{% if match.white_win == "loss" %}<span class="win"> (Win)</span>{% endif %} {% if match.white_win == "tie" %}(Tie){% endif %}</td>
+                        <td>{{match.match_datetime|date:'Y-m-d H:i' }}</td>
+                        <td>
+                            <form action="/cancel_match" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" id="match" name="match" value={{ match.id }}>
+                                <button type="submit" class="btn btn-danger" >Cancel</button>  
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        </table>
+        <div style="text-align:center; margin-bottom: 30px;"> None. </div>
+            {% endif %}
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+<div class="footer">
+    <i>Created by b.dodewaard@gmail.com.</i>
+</div>
+{% endblock %}

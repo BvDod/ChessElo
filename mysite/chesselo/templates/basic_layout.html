@@ -1,0 +1,184 @@
+<!--
+Brent van Dodewaard.
+WebApps: project: Database Sketch.
+-->
+
+<!DOCTYPE html>
+    {% load static %}
+    {% load crispy_forms_tags %}
+    <html>
+        <head>
+            <title>{% block title%}ChessElo.{% endblock %}</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+            <link href="{% static 'style.css' %}" rel="stylesheet">
+            <script src="https://unpkg.com/gojs/release/go-debug.js"></script>
+        </head>
+
+        <body>
+            <header>
+                <div class="header-left">
+                    <div class="site-title">
+                        ChessElo.
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    {% block header-right %}{% endblock %}
+                </div>
+            </header>
+
+            <main style="display: inline-block;">
+                {% if logged_in %}
+                <div style="width:100%;" id="buttons">
+                    <div class="button-div">
+                        <div class='logout-block' style="margin-top:10px;">
+                            <form action="/leaderboards" method="GET">
+                                <button type="submit" {% if lb %} class="btn btn-light bold" {% else %} class="btn btn-light" {% endif %}>Leaderboards</button>  
+                            </form>
+                        </div>
+                        <div class='logout-block'>
+                            <form action="/pending" method="GET">
+                                <button type="submit" {% if pending %} class="btn btn-light bold" {% else %} class="btn btn-light"{% endif %}>Pending matches</button>  
+                            </form>
+                        </div>
+                        <div class='logout-block'>
+                            <form action="/account" method="GET">
+                                <button type="submit"  {% if account_page %} class="btn btn-light bold" {% else %} class="btn btn-light" {% endif %}>Account page</button>  
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="message">
+                            <span style="margin:3px;">{{ message }}</span>
+                        </div> 
+                    {% endfor %}
+                {% endif %}
+
+                {% if logged_in %}
+                <div>
+                    <div class="button-div-add">
+                        <div class='logout-block' style="margin-top:10px;">
+                        
+                            <button type="submit" class="btn btn-danger" id="reg-btn">Add match</button>  
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div id="reg-modal" class="reg-modal">
+
+                    <div class="modal-content" style="text-align: center">
+                        
+                        <div class="modal-header" style="font-weight: 500; font-size: 150%; text-align: center;">
+                            Add match
+                            <span class="close">&times;</span>
+                        </div>
+                        
+                        <div class="modal-body">
+                            <form method="POST" action="/add_match" class="reg-form">
+                                <input type="hidden" id="user1" name="user1" value={{request.user.username}}>
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <table class="table">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                    <th>{{request.user.username}}</th>
+                                                    <th>
+                                                        <select name="user1_color" id="user1_color" onchange="WhiteBlack()">
+                                                            <option value="white">white</option>
+                                                            <option value="black">black</option>
+                                                        </select>
+                                                    </th>
+                                                    <th>vs</th>
+                                                    <th>
+                                                        <select name="user2" id="cars">
+                                                            {% for user in opponents%}
+                                                                {% if not user.username == request.user.username %}    
+                                                                    <option value={{user.username}}>{{user.username}}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </th>
+                                                    <th>
+                                                        <select name="user2_color" id="user2_color" onchange="WhiteBlack()">
+                                                            <option value="white">white</option>
+                                                            <option value="black" selected>black</option>
+                                                        </select>
+                                                    </th>
+                                                    <th>
+                                                        <select name="user1_win" id="user1_win">
+                                                            <option value="win">Win</option>
+                                                            <option value="loss">Loss</option>
+                                                            <option value="tie">Tie</option>
+                                                        </select>
+                                                    </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-info">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                
+                    </div>
+                </div>
+                <script>
+                    function WhiteBlack() {
+                        var user1 = document.getElementById('user1_color');
+                        var user2 = document.getElementById('user2_color');
+                        if (user1.selectedIndex == 0){
+                            user2.selectedIndex = 1;
+                        }
+                        if (user1.selectedIndex == 1){
+                            user2.selectedIndex = 0;
+                        }
+                        if (user2.selectedIndex == 0){
+                            user1.selectedIndex = 1;
+                        }
+                        if (user2.selectedIndex == 1){
+                            user1.selectedIndex = 0;
+                        }
+                    }
+
+                    // Basic variables definitions for the modal.
+                    var modal = document.getElementById("reg-modal");
+                    var btn = document.getElementById("reg-btn");
+                    var span = document.getElementsByClassName("close")[0];
+                    
+                
+                    // When the user clicks the button, open the modal. 
+                    btn.onclick = function() {
+                      modal.style.display = "block";
+                    }
+                
+                    // When the user clicks on <span> (x), close the modal.
+                    span.onclick = function() {
+                      modal.style.display = "none";
+                    }
+                    
+                    // When the user clicks anywhere outside of the modal, close it.
+                    window.onclick = function(event) {
+                      if (event.target == modal) {
+                        modal.style.display = "none";
+                      }
+                    }
+                </script>
+                {% block main %}{% endblock %}
+
+                {% block footer %} {% endblock%}
+            </main>
+            
+            <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+            {% block scripts %} {% endblock %}
+        </body>
+    </html>

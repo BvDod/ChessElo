@@ -1,0 +1,298 @@
+/* Brent van Dodewaard.
+   WebApps: project: Database Sketch. */
+
+/* Source i used A LOT for flex-boxes: https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
+   
+html, body {
+    height:100%;
+    background-color: rgb(243, 243, 243);
+    overflow-y: scroll;
+} 
+
+
+.message {
+    text-align: center;
+    margin: 20px auto 10px auto;
+    color: black;
+    font-size: 140%;
+    background-color: rgba(220, 53, 70, 0.746);
+    border-style: solid;
+    border-color: black;
+    border-radius: 5px;
+    border-width: 2px;
+    display: table;
+     
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+table {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+}
+.loss {
+    color: #c70000;
+}
+
+.win {
+    color: #01ce01;
+}
+
+header {
+    width: 100%;
+    background-color: rgb(23, 162, 184);
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  
+    
+}
+
+.button-div {
+    width: 100%;
+    background-color: rgb(204, 204, 204);
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.button-div-add {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.usernames {
+color: black;
+text-decoration: none;
+}
+
+.btn-danger{
+    padding: 10px;
+}
+.site-title {
+    font-size: 400%;
+    font-weight: 500;
+    height: auto;
+    margin: auto;
+}
+
+.register-block {
+    margin: 10px;
+    margin-top: 0px;
+}
+
+main {
+    height: 100%;
+    /* Source: https://stackoverflow.com/questions/12575251/why-is-my-page-not-scrollable */
+    overflow-y: scroll;
+}
+
+.login-main {
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    flex-grow: 1;
+    margin: 5%;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.leaderboards-main {
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    flex-grow: 1;
+    margin: 20px;
+}
+
+.login-form-container {
+    margin: 1% auto;
+}
+
+.login-btn {
+    margin-left: 5%;
+}
+
+.about-me-container {
+    max-width: 400px;
+    width: 100%;
+    margin: 2.5% auto;
+}
+
+.login-form {
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+}
+
+.about-me-picture{
+    margin-top: 5%;
+}
+
+.footer {
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.register-container {
+    width: 400px;
+}
+
+.sidebar {
+    width: 160px;
+    background-color: rgb(219, 219, 219);
+}
+
+.sidebar-button {
+    margin: 20px 10px;
+}
+
+.topbar-btn {
+    margin: 25px;
+}
+
+.account-main {
+    overflow-y: scroll;
+}
+
+.editor-container {
+    display: flex;
+    justify-content: start;
+    flex-direction: row;
+    border-style: solid;
+    border-color: rgb(219, 219, 219);
+    border-width: 0.5vw;
+    min-height: 100%;
+}
+
+.topbar {
+    height: auto;
+    width: 100%;
+    background-color: rgb(219, 219, 219);
+    display: flex;
+    justify-content: start;
+}
+
+.description {
+    width: 100%;
+    margin: 40px 10px auto 10px;
+}
+
+.description-text {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.reg-modal {
+    display: none;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.527);
+    margin: auto;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: 100px;
+}
+
+.modal-content {
+    margin: auto;
+    text-align: center;
+    width: 500px;
+    max-width: 100%;
+}
+
+.close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.modal-header {
+    text-align: center;
+}
+
+.noaccount {
+    color: white;
+    white-space: nowrap;
+    width: 100px;
+}
+
+.project-title {
+    text-align: center;
+    margin: 2%;
+}
+
+.logout-block{
+    margin: auto 10px 10px 10px;
+    display: inline-block;
+}
+
+.logout {
+    color:white;
+}
+
+.file-title {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 200%;
+    font-weight: 500;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;}
+
+.diagram-pc {
+    width: 100%;
+    height: 100%;
+}
+
+.diagram-mobile {
+    width: 100%;
+    height: 100%;
+}
+
+.MyDiagram {
+    width: 100%;
+    height: 100%;
+}
+
+.editor-main {
+width: 100%;
+position: relative;
+text-align: center;
+}
+
+.reg-form{
+    margin: 10px;
+}
+
+.show-url {
+    margin-top: 5px;
+}
+
+.no-files {
+    text-align: center;
+}
