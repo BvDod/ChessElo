@@ -1,1 +1,1 @@
-web: gunicorn mysite:chesselo
+web: gunicorn chesselo.wsgi
